@@ -1,0 +1,179 @@
+<?php 
+require_once "../app/coneccion.php";
+ SESSION_START();
+ if(isset($_SESSION["usuario"]) && isset($_SESSION["password"])&& isset($_SESSION["tipoUsuario"])){
+    $cnn = new Conexion();
+    $con = $cnn->conexionMysql();
+    mysqli_select_db($con,"sistemaferreteria");
+        $estado="Activo";
+        $usuario=$_SESSION["usuario"];
+        $sql="SELECT * FROM usuarios where usuario='$usuario' and estado='$estado'";
+        if($consulta = $con->query($sql))
+        {
+            $fila=$consulta->fetch_assoc();
+            $usuario1= $fila["usuario"];
+            $tipo = $fila["tipoUsuario"];
+}
+else
+{
+   if($_SESSION["tipoUsuario"] != "VENDEDOR"){
+    header('Location:../index.php');
+   }
+    
+}
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>MELI CONST</title>
+
+        <!-- CSS -->
+
+ <link href="./bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- MetisMenu CSS -->
+    <link href="./bower_components/metisMenu/dist/metisMenu.min.css" rel="stylesheet">
+
+    <!-- Timeline CSS -->
+    <link href="./dist/css/timeline.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="./dist/css/sb-admin-2.css" rel="stylesheet">
+    <link href="./dist/css/jquery-ui.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="./bower_components/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+
+    <section id="wrapper">
+
+        <!-- Navigation -->
+        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+              
+            </div>
+            <!-- /.navbar-header -->
+
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> <?php  echo $usuario1." ".$tipo;?></a>
+                        </li>
+                        <li class="divider"></li>
+                        <li><a href="cerrarSession.php"><i class="fa fa-sign-out fa-fw"></i> Cerrar session</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+            <!-- /.navbar-top-links -->
+            <div class="navbar-default sidebar" role="navigation">
+                <div class="sidebar-nav navbar-collapse">
+                    <ul class="nav" id="side-menu">
+                        <li class="sidebar-search">
+                            <div class="input-group custom-search-form">
+
+                                      <img class="img-responsive img-full" src="../bootstrap/imagenes/logo.png" alt=""/>
+                            </div>
+                            <!-- /input-group -->
+                        </li>
+                        <li>
+                            <a href="indexVendedor.php"><i class="fa fa-windows  fa-fw"></i> Inicio</a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-list-ul -o fa-fw"></i> Ventas<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                 <li>
+                                    <a href="javascript:cargar();" id="buscarVentaFechasVendedor"><i class="fa fa-angle-right -o fa-fw"></i>Busqueda fechas</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:cargar();" id="insertarVentaVendedor"><i class="fa fa-angle-right -o fa-fw"></i>insertar</a>
+                                </li>
+
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-list-ul -o fa-fw"></i> Clientes<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                 <li>
+                                    <a href="javascript:cargar();" id="listaClienteVendedor"><i class="fa fa-angle-right -o fa-fw"></i>Lista </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:cargar();" id="insertarClienteVendedor"><i class="fa fa-angle-right -o fa-fw"></i>insertar</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-list-ul -o fa-fw"></i> Productos<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                                 <li>
+                                    <a href="javascript:cargar();" id="listaProducto"><i class="fa fa-angle-right -o fa-fw"></i>Lista </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:cargar();" id="buscarProducto"><i class="fa fa-angle-right -o fa-fw"></i>Busqueda por nombre</a>
+                                </li>
+                            </ul>
+                            <!-- /.nav-second-level -->
+                        </li>
+                        <li>
+                            <div class="thumbnail">
+                                <a style="width:100%"  href="#"><img src="../bootstrap/imagenes/products/images.jpeg" alt=""/></a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+            <section id="page-wrapper">
+                <div id="mensaje"></div>
+                <div id="respuesta">
+                </div>
+            </section>
+    </section>
+
+    <script src="./bower_components/jquery/dist/jquery.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="./bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="./bower_components/metisMenu/dist/metisMenu.min.js"></script>
+
+
+
+    <!-- Custom Theme JavaScript -->
+    <script src="./dist/js/sb-admin-2.js"></script>
+    <script src="./dist/js/principalVendedor.js"></script>
+    <script src="./dist/js/jquery-ui.js"></script>
+
+</body>
+</html>
+
+<?php 
+}
+else
+{
+    header("Location:../index.php");
+}
+
+?>

@@ -1,0 +1,12 @@
+{
+  "cols": [
+        {"id":"","label":"Nombre","pattern":"","type":"string"},
+        {"id":"","label":"Stock disponible","pattern":"","type":"number"}
+      ],
+  "rows": [
+        {"c":[{"v":"Rodillo ","f":null},{"v":3,"f":null}]},
+        {"c":[{"v":"Pintura 5Lts","f":null},{"v":1,"f":null}]},
+        {"c":[{"v":"Brocha","f":null},{"v":1,"f":null}]}
+       
+      ]
+}
